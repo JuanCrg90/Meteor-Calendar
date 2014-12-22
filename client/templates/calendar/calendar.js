@@ -35,6 +35,7 @@ Template.calendar.rendered = function ()
 Template.calendar.helpers({
 	lastMod: function () {
 		console.log(Session.get('lastMod'));
+		$('#calendar').fullCalendar( 'refetchEvents');
 		return Session.get('lastMod');
 	}
 });
