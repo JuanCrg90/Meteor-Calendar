@@ -12,6 +12,8 @@ Template.calendar.rendered = function ()
 		},
 		eventClick: function(calEvent, jsEvent, view) 
 		{
+			Session.set('editing_calevent',calEvent.id)
+			Session.set('showEditEvent',true)
 		},
 		events: function(start, end, timezone, callback) 
 		{			
@@ -33,10 +35,25 @@ Template.calendar.rendered = function ()
 }
 
 Template.calendar.helpers({
-	lastMod: function () {
-		console.log(Session.get('lastMod'));
+	lastMod: function () {		
 		$('#calendar').fullCalendar( 'refetchEvents');
 		return Session.get('lastMod');
+	},
+	showEditEvent: function(){			
+		return Session.get('showEditEvent');
 	}
 });
 
+Template.calendar.events({
+	'click .fc-event-container': function () {
+		$('#modal-id').modal('show');
+	}
+});
+
+Template.editEvent.helpers({
+	title: function () {
+		var calEvent =CalEvents.findOne({id:Session.get('editing_calevent')});
+		console.log(calEvent)
+		return calEvent
+	}
+});
